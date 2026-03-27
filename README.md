@@ -15,8 +15,8 @@ This project is a decentralized storage solution designed to ensure data reliabi
 ### PHASE 1: Data Logic (Month 1)
 - [x] **Week 1: Environment Setup & Hashing Test** – Install Node.js and Ganache. Write a script to turn a string of text into a SHA-256 hash.
 - [x] **Week 2: File Buffers** – Learn to read actual files (JPG, PDF) into binary "Buffer" objects for processing.
-- [ ] **Week 3: Chunking & Hashing** – Slice files into smaller pieces (1MB) and assign unique SHA-256 hashes to each.
-- [ ] **Week 4: Merkle Tree** – Combine piece hashes into a tree structure to generate a final "Root Hash."
+- [x] **Week 3: Chunking & Hashing** – Slice files into smaller pieces (1MB) and assign unique SHA-256 hashes to each.
+- [x] **Week 4: Merkle Tree** – Combine piece hashes into a tree structure to generate a final "Root Hash."
 
 ### PHASE 2: Distributed Storage (Month 2)
 - [ ] **Week 5: Create Storage Nodes** – Set up independent folders to simulate distinct storage "servers."

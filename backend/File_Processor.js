@@ -3,7 +3,7 @@ const crypto = require('crypto');
 
 // I just wrap the code in a function called 'processFile'
 function processFile(filePath) {
-    const data = fs.readFileSync(filePath); // Using sync so it returns the list
+    const data = fs.readFileSync(filePath); 
     const CHUNK_SIZE = 1024 * 1024; // This equals 1MB in bytes
 
     let offset = 0;
@@ -16,6 +16,9 @@ function processFile(filePath) {
     while (offset < data.length) {
         const chunk = data.slice(offset, offset + CHUNK_SIZE);
         const hash = crypto.createHash('sha256').update(chunk).digest('hex');
+
+        // this creates shard_1.bin, shard_2.bin, shard_3.bin 
+        fs.writeFileSync(`shard_${chunkNumber}.bin`, chunk); 
 
         console.log(`Chunk #${chunkNumber} | Size: ${chunk.length} bytes | Hash: ${hash.substring(0, 10)}...`);
         
@@ -32,3 +35,7 @@ function processFile(filePath) {
 
 // This line allows Week 4 to "borrow" this code
 module.exports = { processFile };
+
+// This tells the code to actually start working on my file
+const myFile = './RealFileSample.pdf'; 
+processFile(myFile);

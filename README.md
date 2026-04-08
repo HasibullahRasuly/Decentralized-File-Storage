@@ -20,7 +20,7 @@ This project is a decentralized storage solution designed to ensure data reliabi
 
 ### PHASE 2: Distributed Storage (Month 2)
 - [x] **Week 5: Create Storage Nodes** – Set up independent folders to simulate distinct storage "servers."
-- [ ] **Week 6: Sharding (Distribution)** – Develop a script to distribute file pieces across multiple nodes.
+- [x] **Week 6: Sharding (Distribution)** – Develop a script to distribute file pieces across multiple nodes.
 - [ ] **Week 7: Metadata Mapping** – Create a JSON "map" to track which file pieces belong to which nodes.
 - [ ] **Week 8: Reassembly** – Retrieve pieces, verify hashes for corruption, and stitch them back into the original file.
 

@@ -1,13 +1,14 @@
+const fs = require('fs');
 const crypto = require('crypto');
 
-// This line connects to my File_Processor.js
-const { processFile } = require('./File_Processor'); 
+// DYNAMIC SCAN: Look for the shards created by File_Processor
+const shardFiles = fs.readdirSync('./').filter(f => f.endsWith('.bin'));
 
-// Tell which file to look at
-const targetFile = './RealFileSample.pdf';
-
-// This runs Week 3 code and gets the hashes automatically
-const shardHashes = processFile(targetFile);
+// Get the hashes from the shards directly
+let shardHashes = shardFiles.map(file => {
+    const data = fs.readFileSync(file);
+    return crypto.createHash('sha256').update(data).digest('hex');
+});
 
 // Week 4 Logic: Combine everything into one Master Root
 function createMerkleRoot(hashes) {
@@ -22,6 +23,16 @@ function createMerkleRoot(hashes) {
     return root;
 }
 
-const finalRoot = createMerkleRoot(shardHashes);
+let finalRoot = '';
+let targetFile = '';
 
-console.log("FINAL MERKLE ROOT: " + finalRoot);
+// Only calculate if shards exist 
+if (shardHashes.length > 0) {
+    finalRoot = createMerkleRoot(shardHashes);
+    console.log("FINAL MERKLE ROOT: " + finalRoot);
+    targetFile = shardFiles[0].split('_shard_')[0];
+} else {
+    console.log("No shards found in main directory. Check Storage_Server.");
+}
+
+module.exports = { targetFile, finalRoot };

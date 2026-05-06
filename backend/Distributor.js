@@ -1,4 +1,5 @@
 const fs = require('fs');
+const crypto = require('crypto');
 
 // Import the data from Merkle script
 const { targetFile, finalRoot } = require('./Merkle_Generator');
@@ -27,6 +28,10 @@ allFiles.forEach((fileName) => {
     // Only process shards that belong to the CURRENT file
     if (fileName.endsWith('.bin') && fileName.startsWith(pureFileName)) {
         console.log("Processing shard: " + fileName);
+        
+        // Read the shard's raw data into a buffer so we can calculate its SHA-256 hash
+        const fileBuffer = fs.readFileSync('./' + fileName);
+        const shardHash = crypto.createHash('sha256').update(fileBuffer).digest('hex');
 
         // The Circular Math
         // This puts each shard in2o two different nodes(servers)
@@ -43,6 +48,7 @@ allFiles.forEach((fileName) => {
         // WEEK 7 ADDITION: Save the location info for the JSON Map
         shardTracking.push({
             id: fileName,
+            hash: shardHash,
             locations: [`Node${(shardCount % 3) + 1}`, `Node${((shardCount + 1) % 3) + 1}`]
         });
 

@@ -38,4 +38,4 @@ function processFile(filePath) {
 
 // This line allows other weeks to borrow this code
 module.exports = { processFile };
-
+// Week 3

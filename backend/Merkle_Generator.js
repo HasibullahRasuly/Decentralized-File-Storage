@@ -1,15 +1,6 @@
 const fs = require('fs');
 const crypto = require('crypto');
 
-// DYNAMIC SCAN: Look for the shards created by File_Processor
-const shardFiles = fs.readdirSync('./').filter(f => f.endsWith('.bin'));
-
-// Get the hashes from the shards directly
-let shardHashes = shardFiles.map(file => {
-    const data = fs.readFileSync(file);
-    return crypto.createHash('sha256').update(data).digest('hex');
-});
-
 // Week 4 Logic: Combine everything into one Master Root
 function createMerkleRoot(hashes) {
     console.log("--- Generating Merkle Root ---");
@@ -23,16 +14,32 @@ function createMerkleRoot(hashes) {
     return root;
 }
 
-let finalRoot = '';
-let targetFile = '';
+// Wrap the logic into a reusable function for Express Server
+function generateMerkleRoot() {
+    // DYNAMIC SCAN: Look for the shards created by File_Processor
+    const shardFiles = fs.readdirSync('./').filter(f => f.endsWith('.bin'));
 
-// Only calculate if shards exist 
-if (shardHashes.length > 0) {
-    finalRoot = createMerkleRoot(shardHashes);
-    console.log("FINAL MERKLE ROOT: " + finalRoot);
-    targetFile = shardFiles[0].split('_shard_')[0];
-} else {
-    console.log("No shards found in main directory. Check Storage_Server.");
+    // Get the hashes from the shards directly
+    let shardHashes = shardFiles.map(file => {
+        const data = fs.readFileSync(file);
+        return crypto.createHash('sha256').update(data).digest('hex');
+    });
+
+    let finalRoot = '';
+    let targetFile = '';
+
+    // Only calculate if shards exist 
+    if (shardHashes.length > 0) {
+        finalRoot = '0x' + createMerkleRoot(shardHashes); // Added '0x' prefix so it matches standard blockchain hex formats!
+        console.log("FINAL MERKLE ROOT GENERATED: " + finalRoot);
+        targetFile = shardFiles[0].split('_shard_')[0];
+    } else {
+        console.log("No shards found in directory.");
+    }
+
+    // Return the real computed data back to the server
+    return { targetFile, finalRoot };
 }
 
-module.exports = { targetFile, finalRoot };
+// Export the function so Server.js can run it
+module.exports = { generateMerkleRoot };

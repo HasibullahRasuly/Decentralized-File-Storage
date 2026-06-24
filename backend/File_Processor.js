@@ -39,20 +39,3 @@ function processFile(filePath) {
 // This line allows other weeks to borrow this code
 module.exports = { processFile };
 
-// look at the 'uploads' folder for the uploaded file
-const UploadsFolder = './Uploads/';
-
-// It finds the first real file in that folder
-const files = fs.readdirSync(UploadsFolder).filter(f => !f.startsWith('.'));
-
-if (files.length > 0) {
-    const myFile = UploadsFolder + files[0]; 
-    console.log(`Processing detected file: ${myFile}`);
-    processFile(myFile);
-    
-    // Delete the file after sharding is done 
-    fs.unlinkSync(myFile); 
-    console.log(`Cleanup: ${myFile} deleted from Uploads.`);
-} else {
-    console.log("Error: Please put a file in the 'Uploads' folder first!");
-}

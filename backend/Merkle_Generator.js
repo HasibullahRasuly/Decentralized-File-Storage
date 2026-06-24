@@ -43,3 +43,4 @@ function generateMerkleRoot() {
 
 // Export the function so Server.js can run it
 module.exports = { generateMerkleRoot };
+// Week 4

@@ -86,3 +86,5 @@ module.exports = {
     finalRoot: MerkleScript.finalRoot, 
     distributeShards 
 };
+
+// Week 6
